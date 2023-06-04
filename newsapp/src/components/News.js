@@ -45,23 +45,21 @@ export default class News extends Component {
   render() {
     return (
       <div className='container my-3'>
-      <h2>NewsMonkey - Top Headlines</h2>
-       <div className="row">
-        <div className="col-md-4">
-            <NewsItem title = "pic1" description ="this is pic 1" imageUrl = 
-            "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1099495_800x450.jpg"
-            newsUrl= ""/>
-        </div>
-        <div className="col-md-4">
-            <NewsItem title = "pic1" description ="this is pic 1"/>
-        </div>
-        <div className="col-md-4">
-            <NewsItem title = "pic1" description ="this is pic 1"/>
+        <h2>NewsMonkey - Top Headlines</h2>
+        <div className="row">
+          {this.state.articles.map((element) => {
+            const title = element.title ? element.title.slice(0, 45) : '';
+            const description = element.description ? element.description.slice(0, 88) : '';
+            return (
+              <div className="col-md-4" key={element.url}>
+                <NewsItem title={title} description={description} imageUrl={element.urlToImage} newsUrl={element.url} />
+              </div>
+            );
+          })}
         </div>
       </div>
-    </div>
-    )
-  }
-}
+    );
+   }
+  }    
 
 
