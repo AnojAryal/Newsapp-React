@@ -7,19 +7,41 @@ export default class News extends Component {
     super();
     this.state= {
       articles : [] ,
-      loading : false 
+      loading : false ,
+      page :1 
     }
   }
   //using fetch api 
   //fetching data from the News API and store the 
   //articles in the component's state using the componentDidMount lifecycle method
   async componentDidMount(){
-      let url ="https://newsapi.org/v2/top-headlines?country=us&apiKey=f1169801c4ca4a96a0fc71ecd03f2027"
+      let url ="https://newsapi.org/v2/top-headlines?country=us&apiKey=f1169801c4ca4a96a0fc71ecd03f2027&page-1"
       let data = await fetch(url)
       let parsedData = await data.json()
       // console.log(parsedData);
       this.setState({articles : parsedData.articles})
   }
+
+  handlePreviousClick = async()=>{
+    let url =`https://newsapi.org/v2/top-headlines?country=us&apiKey=f1169801c4ca4a96a0fc71ecd03f2027&page=${this.state.page -1}`
+    let data = await fetch(url)
+    let parsedData = await data.json()
+    this.setState({  
+      page :this.state.page - 1 ,
+      articles : parsedData.articles
+    })
+  }
+
+  handleNextClick = async()=>{
+    let url =`https://newsapi.org/v2/top-headlines?country=us&apiKey=f1169801c4ca4a96a0fc71ecd03f2027&page=${this.state.page + 1}`
+    let data = await fetch(url)
+    let parsedData = await data.json()
+    this.setState({  
+      page :this.state.page + 1 ,
+      articles : parsedData.articles
+    })
+  }
+
 
 
   render() {
@@ -42,6 +64,10 @@ export default class News extends Component {
               </div>
             );
           })}
+        </div>
+        <div className="container d-flex justify-content-between">
+        <button disabled={this.state.page<=1} type="button" class="btn btn-dark" onClick={this.handlePreviousClick()}>&larr; Previous</button>
+        <button type="button" class="btn btn-dark"  onClick={this.handleNextClick()}>Next &rarr;</button>
         </div>
       </div>
     );
